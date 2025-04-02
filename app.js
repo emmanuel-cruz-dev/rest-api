@@ -1,10 +1,9 @@
 import express, { json } from "express";
 import { randomUUID } from "node:crypto";
 import { validateMovie, validatePartialMovie } from "./schemas/movies.js";
+import { readJSON } from "./utils.js";
 
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const movies = require("./movies.json");
+const movies = readJSON("./movies.json");
 
 const app = express();
 app.use(json());
