@@ -1,10 +1,10 @@
-const express = require("express");
-const crypto = require("node:crypto");
-const movies = require("./movies.json");
-const { validateMovie, validatePartialMovie } = require("./schemas/movies");
+import express, { json } from "express";
+import { randomUUID } from "node:crypto";
+import movies from "./movies.json" assert { type: "json" };
+import { validateMovie, validatePartialMovie } from "./schemas/movies.js";
 
 const app = express();
-app.use(express.json());
+app.use(json());
 app.disable("x-powered-by");
 
 app.get("/", (req, res) => {
@@ -48,7 +48,7 @@ app.post("/movies", (req, res) => {
   }
 
   const newMovie = {
-    id: crypto.randomUUID(),
+    id: randomUUID(),
     ...result.data,
   };
 
@@ -113,4 +113,4 @@ app.listen(PORT, () => {
   console.log(`Server listening on port http://localhost:${PORT}`);
 });
 
-module.exports = app;
+export default app;
