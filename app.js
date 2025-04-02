@@ -9,10 +9,6 @@ app.disable("x-powered-by");
 
 app.use("/movies", moviesRouter);
 
-// app.get("/", (req, res) => {
-//   res.json({ message: "hola mundo" });
-// });
-
 const PORT = process.env.PORT ?? 3000;
 
 app.listen(PORT, () => {
