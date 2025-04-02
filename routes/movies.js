@@ -12,9 +12,9 @@ moviesRouter.get("/", (req, res) => {
     const filteredMovies = movies.filter((movie) =>
       movie.genre.some((g) => g.toLowerCase() === genre.toLowerCase())
     );
-    return res.status(200).json(filteredMovies);
+    return res.json(filteredMovies);
   }
-  res.status(200).json(movies);
+  res.json(movies);
 });
 
 moviesRouter.get("/:id", (req, res) => {
