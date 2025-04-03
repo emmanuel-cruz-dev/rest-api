@@ -4,6 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "start:mysql": "node --watch server-with-mysql.js",
+    "start:local": "node --watch server-with-local.js",
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint"
