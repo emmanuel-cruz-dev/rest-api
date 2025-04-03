@@ -1,7 +1,9 @@
 import { MongoClient, ObjectId, ServerApiVersion } from "mongodb";
+import dotenv from "dotenv";
 
-const uri =
-  "mongodb+srv://user:???@cluster0.dhwmu.mongodb.net/?retryWrites=true&w=majority";
+dotenv.config();
+
+const uri = process.env.MONGODB_URI;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -15,12 +17,16 @@ const client = new MongoClient(uri, {
 async function connect() {
   try {
     await client.connect();
-    const database = client.db("database");
-    return database.collection("movies");
+    console.log("Connected to MongoDB");
+    const db = client.db("sample_mflix");
+    return db.collection("movies");
+    // const database = client.db("database");
+    // return database.collection("movies");
   } catch (error) {
-    console.error("Error connecting to the database");
-    console.error(error);
-    await client.close();
+    console.error("Error connecting to the database", error);
+    throw error;
+    // console.error(error);
+    // await client.close();
   }
 }
 
