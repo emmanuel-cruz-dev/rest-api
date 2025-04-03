@@ -17,12 +17,22 @@ export class MovieModel {
 
       // Get genre ids from database table using genre names
       const [genres] = await connection.query(
-        `SELECT id, name FROM WHERE LOWER(name) = ?;`,
+        `SELECT id, name FROM genre WHERE LOWER(name) = ?;`,
         [lowerCaseGenre]
       );
 
       // No genre found
       if (genres.length === 0) return [];
+
+      // Get the id from the first genre result
+      const [{ id }] = genres;
+
+      // Get all movies ids from database table
+      // la query a movie_genres
+      // join
+      // y devolver resultados...
+
+      return [];
     }
 
     const [movies] = await connection.query(
@@ -31,7 +41,16 @@ export class MovieModel {
     return movies;
   }
 
-  static async getById({ id }) {}
+  static async getById({ id }) {
+    const [movies] = await connection.query(
+      `SELECT title, year, director, duration, poster, rate, BIN_TO_UUID(id) id FROM movie WHERE id = UUID_TO_BIN(?);`,
+      [id]
+    );
+
+    if (movies.length === 0) return null;
+
+    return movies[0];
+  }
 
   static async create({ input }) {}
 
