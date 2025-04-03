@@ -52,7 +52,28 @@ export class MovieModel {
     return movies[0];
   }
 
-  static async create({ input }) {}
+  static async create({ input }) {
+    const {
+      genre: genreInput,
+      title,
+      year,
+      duration,
+      director,
+      rate,
+      poster,
+    } = input;
+
+    // Inser movie
+    const [uuidResult] = await connection.query("SELECT UUID() uuid;");
+    const [{ uuid }] = uuidResult;
+
+    const result = await connection.query(
+      `INSERT INTO movie (id, title, year, director, duration, poster, rate) VALUES (UUID_TO_BIN(?), ?, ?, ?, ?, ?, ?);`,
+      [uuid, title, year, director, duration, poster, rate]
+    );
+
+    console.log(result);
+  }
 
   static async delete({ id }) {}
 
