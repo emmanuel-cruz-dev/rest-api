@@ -67,12 +67,21 @@ export class MovieModel {
     const [uuidResult] = await connection.query("SELECT UUID() uuid;");
     const [{ uuid }] = uuidResult;
 
-    const result = await connection.query(
-      `INSERT INTO movie (id, title, year, director, duration, poster, rate) VALUES (UUID_TO_BIN(?), ?, ?, ?, ?, ?, ?);`,
-      [uuid, title, year, director, duration, poster, rate]
+    try {
+      await connection.query(
+        `INSERT INTO movie (id, title, year, director, duration, poster, rate) VALUES (UUID_TO_BIN("${uuid}"), ?, ?, ?, ?, ?, ?);`,
+        [title, year, director, duration, poster, rate]
+      );
+    } catch (err) {
+      throw new Error("Error creating movie.");
+    }
+
+    const [movies] = await connection.query(
+      `SELECT title, year, director, duration, poster, rate, BIN_TO_UUID(id) id FROM movie WHERE id = UUID_TO_BIN(?);`,
+      [uuid]
     );
 
-    console.log(result);
+    return movies[0];
   }
 
   static async delete({ id }) {}
